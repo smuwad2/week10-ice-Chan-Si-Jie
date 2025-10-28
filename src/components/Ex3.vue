@@ -35,6 +35,12 @@
         methods: {
             deletePost(id) {
                 // TODO: Complete the delete method
+                axios.get(`${this.baseUrl}/deletePost?id=${id}`).then(response => {
+                    this.posts = this.posts.filter(p => p.id !== id);
+                })
+                .catch(error => {
+                    this.posts = [{ entry: 'There was an error: ' + error.message }]
+                })
             }
         }
     }
@@ -42,6 +48,11 @@
 
 <template>
    <!-- TODO: make use of the 'blog-post' component to display the blog posts -->
-
+    <blogPost
+    v-for="post in posts"
+    v-bind:key="post.id"
+    v-bind:post="post">
+    <button @click="deletePost(post.id)" class="btn btn-primary">Delete</button>
+    </blogPost>
 </template>
 
